@@ -2,14 +2,12 @@
 
 namespace library;
 
-use controllers\SampleController;
-
 class Router
 {
     private string $prefix;
     private int $prefixLength;
 
-    public function __construct($prefix, $hasNamespace = false){
+    public function __construct($prefix){
         $this->prefix = $prefix;
         $this->prefixLength = strlen($prefix);
     }
@@ -43,34 +41,25 @@ class Router
             if(!$dispatcher->CanExecute())
                 throw new \Exception("Cannot dispatch request for some reason :-) " . $uri);
 
-        }catch(Exception $ex){
-            // Return error result
-            echo "NOOOOOO";
+            $this->PerformRequest($dispatcher, $queryParams);
+
+        }catch(\Exception $ex){
             echo $ex->getMessage();
         }
     }
 
-    private function PerformRequest($dispatcher){
+    private function PerformRequest(Dispatcher $dispatcher, $queryParams){
         $session = new Session();
-        $request = new Request();
+        $request = new Request($queryParams);
         $response = new Response();
 
-        $controller = new SampleController();
-        $controller->session = $session;
-        $controller->request = $request;
-        $controller->response = $response;
-
-        $request = new Request();
-
-        $controller->initialize();
-
-        $controller->performAction();
+        $dispatcher->Dispatch($request, $response, $session);
 
         if($response->getHeaders()->get("Status") != null)
             return;
     }
 
-    private function ParsePath($path) : Array {
+    private function ParsePath($path) : array {
         $pathElements = explode("/", $path);
         $orderedParameters = [];
         $result = Array(
@@ -87,7 +76,7 @@ class Router
             } else if($count == 1) {
                 $result["controller"] = $element;
             } else if($count == 2) {
-                $result["action"] = $element;
+                $result["action"] = $this->EnforceCamelCase($element);
             }else{
                 $orderedParameters[] = $element;
             }
@@ -95,5 +84,17 @@ class Router
         }
 
         return $result;
+    }
+
+    private function EnforceCamelCase($value) : string {
+        if(stripos($value, "_") === 0)
+            return $value;
+
+        $camelCaseResult = "";
+        foreach(explode('_', $value) as $part){
+            $camelCaseResult .= ucfirst($part);
+        }
+
+        return $camelCaseResult;
     }
 }
