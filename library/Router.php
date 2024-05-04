@@ -10,7 +10,7 @@ class Router
     }
 
     public function RouteRequest(){
-
+        $dispatcher = new Dispatcher();
 
         $this->PerformRequest($dispatcher);
     }
@@ -31,7 +31,5 @@ class Router
 
         if($response->getHeaders()->get("Status") != null)
             return;
-
-        $response->send();
     }
 }

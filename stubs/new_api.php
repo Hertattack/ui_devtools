@@ -26,6 +26,9 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
+
+use library\Router;
+
 error_reporting(E_ALL);
 
 try {
@@ -55,8 +58,10 @@ try {
     /**
      * Handle the request
      */
-    $application = new \Phalcon\Mvc\Application($di);
-    echo $application->handle($_SERVER['REQUEST_URI'])->getContent();
+   // $application = new \Phalcon\Mvc\Application($di);
+   // echo $application->handle($_SERVER['REQUEST_URI'])->getContent();
+    $router = new Router();
+    $router->RouteRequest();
 } catch (\Exception $e) {
     $response = array();
     $response['errorMessage'] = $e->getMessage();
