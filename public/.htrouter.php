@@ -85,6 +85,8 @@ if (PHP_OS == 'WINNT') {
 // handle requests
 if (preg_match("/^\/ui\/.*/", $uri)) {
     require_once "{$DEV_WORKDIR}/stubs/index.php";
+} elseif (preg_match("/^\/new_api\/.*/", $uri)) {
+    require_once "{$DEV_WORKDIR}/stubs/new_api.php";
 } elseif (preg_match("/^\/api\/.*/", $uri)) {
     require_once "{$DEV_WORKDIR}/stubs/api.php";
 } else {

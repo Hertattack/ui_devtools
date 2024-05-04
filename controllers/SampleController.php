@@ -3,13 +3,18 @@
 namespace controllers;
 
 use library\Controller;
+use library\Request;
+use library\Response;
+use library\Session;
 
 class SampleController extends Controller
 {
 
-    public \library\Session $session;
-    public \library\Request $request;
-    public \library\Response $response;
+    public Session $session;
+    public Request $request;
+    public Response $response;
 
-    public function performAction(){}
+    public function performAction(){
+        print("Hi from here!");
+    }
 }

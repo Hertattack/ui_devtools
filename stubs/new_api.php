@@ -36,7 +36,7 @@ try {
     /**
      * Read the configuration
      */
-    $config = include __DIR__ . "/../config/config.php";
+    #$config = include __DIR__ . "/../config/config.php";
 
     /**
      * Read auto-loader
@@ -46,22 +46,22 @@ try {
     /**
      * Read services
      */
-    include $config->environment->coreDir . "/src/opnsense/mvc/app/config/services_api.php";
+    //include $config->environment->coreDir . "/src/opnsense/mvc/app/config/services_api.php";
 
     /**
      * local webserver might have moved Authorization header, move it back
      */
-    if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
-        $_SERVER['HTTP_AUTHORIZATION'] = "Basic " .base64_encode($_SERVER['PHP_AUTH_USER'].":".$_SERVER['PHP_AUTH_PW']);
-    }
+    //if (!empty($_SERVER['PHP_AUTH_USER']) && !empty($_SERVER['PHP_AUTH_PW'])) {
+    //    $_SERVER['HTTP_AUTHORIZATION'] = "Basic " .base64_encode($_SERVER['PHP_AUTH_USER'].":".$_SERVER['PHP_AUTH_PW']);
+    //}
 
     /**
      * Handle the request
      */
    // $application = new \Phalcon\Mvc\Application($di);
    // echo $application->handle($_SERVER['REQUEST_URI'])->getContent();
-    $router = new Router();
-    $router->RouteRequest();
+    $router = new Router("/new_api/");
+    $router->RouteRequest($_SERVER['REQUEST_URI']);
 } catch (\Exception $e) {
     $response = array();
     $response['errorMessage'] = $e->getMessage();

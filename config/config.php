@@ -44,11 +44,19 @@ $appcnf = [
     ],
     "application" => []
 ];
+
+foreach ($conf->environment->dev_include_dirs as $dirName){
+    foreach(scandir($dirName) as $file){
+        if($file == "." || $file == "..")
+            continue;
+        require_once($dirName . "/" . $file);
+    }
+}
+
 $packages = [preg_replace('#/+#','/',"{$conf->environment->coreDir}/")];
 foreach ($conf->environment->packages as $package) {
     $packages[] = $package;
 }
-
 
 foreach ($packages as $package) {
     $packageDirs = array(
