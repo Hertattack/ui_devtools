@@ -47,6 +47,10 @@ return new OPNsense\Core\AppConfig([
     'environment' => [
         /* packages to include in setup */
         'packages'      => [],
+        'dev_include_dirs' => [
+             __DIR__ . '/../library',
+             __DIR__ . '/../controllers'
+        ],
         /* location of OPNsense core package */
         'coreDir'        => $ui_core_dir,
     ]
